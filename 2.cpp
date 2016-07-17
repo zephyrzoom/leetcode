@@ -5,7 +5,7 @@
 struct ListNode {
     int val;
     ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+    ListNode(int x) : val(x), next(nullptr) {}
 };
 class Solution {
     private:
@@ -14,25 +14,50 @@ class Solution {
         int sum = 0;
     public:
         ListNode * addTwoNumbers(ListNode* l1, ListNode* l2) {
-            while (l1 != NULL) {
-                num1 = l1->val * 10 + num1;
+            int base = 1;
+            while (l1 != nullptr) {
+                num1 = l1->val * base + num1;
                 l1 = l1->next;
+                base *= 10;
             }
-            num1 /= 10;
-            while (l2 != NULL) {
-                num2 = l2->val * 10 + num1;
+            base = 1;
+            while (l2 != nullptr) {
+                num2 = l2->val * base + num2;
                 l2 = l2->next;
+                base *= 10;
             }
-            num2 /= 10;
             sum = num1 + num2;
 
             ListNode* listSum = new ListNode(sum % 10);
             ListNode* listTmp = listSum;
             sum /= 10;
-            while (sum % 10 != 0) {
+            while (sum != 0) {
                 ListNode* node = new ListNode(sum % 10);
                 listTmp->next = node;
                 listTmp = node;
                 sum /= 10;
             }
+            return listSum;
+        }
 };
+
+ListNode * initList(int num) {
+    ListNode* list = new ListNode(num % 10);
+    ListNode* tmp = list;
+    num /= 10;
+    while (num != 0) {
+        ListNode* node = new ListNode(num % 10);
+        tmp->next = node;
+        tmp = node;
+        num /= 10;
+    }
+    return list;
+}
+
+int main() {
+    ListNode* l1 = initList(342);
+    ListNode* l2 = initList(465);
+    Solution s;
+    ListNode* sum = s.addTwoNumbers(l1, l2);
+    return 0;
+}
