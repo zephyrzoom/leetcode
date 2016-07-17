@@ -8,35 +8,43 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
 };
 class Solution {
-    private:
-        int num1 = 0;
-        int num2 = 0;
-        int sum = 0;
     public:
         ListNode * addTwoNumbers(ListNode* l1, ListNode* l2) {
-            int base = 1;
-            while (l1 != nullptr) {
-                num1 = l1->val * base + num1;
-                l1 = l1->next;
-                base *= 10;
-            }
-            base = 1;
-            while (l2 != nullptr) {
-                num2 = l2->val * base + num2;
-                l2 = l2->next;
-                base *= 10;
-            }
-            sum = num1 + num2;
-
-            ListNode* listSum = new ListNode(sum % 10);
+            int num1 = 0;
+            int num2 = 0;
+            int carry = 0;
+            ListNode* listSum = new ListNode(0);
             ListNode* listTmp = listSum;
-            sum /= 10;
-            while (sum != 0) {
+            while (l1 != nullptr || l2 != nullptr) {
+                if (l1 != nullptr) {
+                    num1 = l1->val;
+                    l1 = l1->next;
+                } else {
+                    num1 = 0;
+                }
+                if (l2 != nullptr) {
+                    num2 = l2->val;
+                    l2 = l2->next;
+                } else {
+                    num2 = 0;
+                }
+                int sum = num1 + num2 + carry;
+                if (sum >= 10) {
+                    carry = 1;
+                } else {
+                    carry = 0;
+                }
                 ListNode* node = new ListNode(sum % 10);
                 listTmp->next = node;
                 listTmp = node;
-                sum /= 10;
             }
+            if (carry) {
+                ListNode* node = new ListNode(1);
+                listTmp->next = node;
+            }
+            ListNode* del = listSum;
+            listSum = listSum->next;
+            delete del;
             return listSum;
         }
 };
@@ -55,8 +63,8 @@ ListNode * initList(int num) {
 }
 
 int main() {
-    ListNode* l1 = initList(342);
-    ListNode* l2 = initList(465);
+    ListNode* l1 = initList(9);
+    ListNode* l2 = initList(9999991);
     Solution s;
     ListNode* sum = s.addTwoNumbers(l1, l2);
     return 0;
