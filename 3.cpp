@@ -11,6 +11,8 @@ class Solution {
                 if (start != string::npos) {
                     sub = sub.substr(start + 1);
                     length = sub.size();
+                    sub += i;
+                    length++;
                 } else {
                     sub += i;
                     length++;
@@ -25,6 +27,6 @@ class Solution {
 
 int main() {
     Solution s;
-    int max = s.lengthOfLongestSubstring("bbbbb");
+    int max = s.lengthOfLongestSubstring("aab");
     return 0;
 }
