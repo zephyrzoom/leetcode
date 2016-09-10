@@ -10,7 +10,7 @@ public:
             permutations.push_back(nums);
         } else {
             for (int n = 0; n < nums.size(); n++) {
-                vector<int> tmp = nums;
+                vector<int> tmp = nums; // 必须创建一个临时vector，否则下面删除会改变原来nums个数
                 tmp.erase(tmp.begin() + n);
                 vector<vector<int>> withoutS = permute(tmp);
                 for (auto i : withoutS) {
